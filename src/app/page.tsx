@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <section className="h-dvh">
-      <div className="flex flex-col gap-8 w-[calc(100%-4rem)] max-w-screen-md mt-24 mx-auto ]">
+    <section className="h-dvh mt-24">
+      <div className="flex flex-col gap-8 w-[calc(100%-4rem)] max-w-screen-md mx-auto ]">
         <div className="flex flex-col gap-8 justify-center items-center">
           <figure>
             <Image
@@ -30,7 +30,7 @@ export default function LoginPage() {
             <label className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]">
               E-mail
               <input
-                className="border-[0.0625rem] h-10 p-2 rounded-lg"
+                className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg"
                 type="email"
                 name="email"
               />
@@ -39,7 +39,7 @@ export default function LoginPage() {
             <label className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]">
               Senha
               <input
-                className="border-[0.0625rem] h-10 p-2 rounded-lg"
+                className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg"
                 type="password"
                 name="password"
               />
