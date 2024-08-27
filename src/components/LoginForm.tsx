@@ -24,6 +24,7 @@ export default function LoginForm() {
             alt="Ichácara logo"
             width="198"
             height="138"
+            priority
           />
         </figure>
 
@@ -31,7 +32,7 @@ export default function LoginForm() {
           <span className="font-poppins font-semibold text-[1.75rem]/[2.25rem] text-light-on-primary-container">
             Login
           </span>
-          <span className="font-poppins font-normal text-base text-light-on-primary-container tracking-[.0313rem] text-center">
+          <span className="font-inter font-normal text-base text-light-on-primary-container tracking-[.0313rem] text-center">
             Seja bem-vindo de volta ao iChacara
           </span>
         </div>
@@ -39,21 +40,34 @@ export default function LoginForm() {
 
       <form onSubmit={login} className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
-          <label className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]">
+          <label
+            htmlFor="email"
+            className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
+          >
             E-mail
             <input
-              className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg"
+              required
+              className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="email"
               name="email"
+              id="email"
+              aria-label="Campo de email"
+              autoComplete="off"
             />
           </label>
 
-          <label className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]">
+          <label
+            htmlFor="password"
+            className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
+          >
             Senha
             <input
-              className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg"
+              required
+              className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="password"
               name="password"
+              id="password"
+              aria-label="Campo de senha"
             />
           </label>
         </div>
@@ -63,7 +77,7 @@ export default function LoginForm() {
             <Link
               href="#"
               aria-label="Esqueci minha senha"
-              className="font-poppins font-bold text-[0.875rem]/[1rem] text-light-primary -tracking-[0.0088rem] text-right"
+              className="w-fit self-end font-poppins font-bold text-[0.875rem]/[1rem] text-light-primary -tracking-[0.0088rem] text-right"
             >
               Esqueci a senha
             </Link>
@@ -78,7 +92,11 @@ export default function LoginForm() {
 
           <span className="font-inter font-normal text-[0.875rem]/[1rem] text-light-on-primary-container -tracking-[0.0088rem] text-center">
             Ainda não é registrado?
-            <Link href="#" aria-label="Criar conta" className="font-bold ml-1">
+            <Link
+              href="/criar-conta"
+              aria-label="Criar conta"
+              className="font-bold ml-1"
+            >
               Criar conta
             </Link>
           </span>
