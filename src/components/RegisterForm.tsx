@@ -6,11 +6,11 @@ import IconRent from "@material-design-icons/svg/outlined/search.svg";
 import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.svg";
 import { useState } from "react";
 import { apiClient } from "@/api";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { showToast } from "@/lib/utils";
 
 export default function RegisterForm() {
   const [selectedType, setSelectedType] = useState("lessee");
-  
+
   function register(e: React.FormEvent<HTMLFormElement>) {
     try {
       e.preventDefault();
@@ -32,37 +32,14 @@ export default function RegisterForm() {
         password: data.password,
       });
 
-      toast("🦄 Wow so easy!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      showToast("success", <p>Cadastro feito com sucesso!</p>);
     } catch (error) {
-      console.log(error)
+      showToast("error", <p>Aconteceu um erro!</p>);
     }
   }
 
   return (
     <section className="flex flex-col gap-8 w-[calc(100%-4rem)] max-w-screen-md mx-auto ]">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        />
-        {/* Same as */}
-      <ToastContainer />
       <div className="flex flex-col gap-8 justify-center items-center">
         <figure>
           <Image
