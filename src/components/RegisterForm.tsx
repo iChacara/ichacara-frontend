@@ -7,11 +7,12 @@ import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.sv
 import { useState } from "react";
 import { apiClient } from "@/api";
 import { showToast } from "@/lib/utils";
+import { RegisterSchema } from "@/lib/zodSchemas";
 
 export default function RegisterForm() {
   const [selectedType, setSelectedType] = useState("lessee");
 
-  function register(e: React.FormEvent<HTMLFormElement>) {
+  async function register(e: React.FormEvent<HTMLFormElement>) {
     try {
       e.preventDefault();
 
@@ -23,18 +24,35 @@ export default function RegisterForm() {
         password: formData.get("password"),
         confirmPassword: formData.get("confirmPassword"),
         type: formData.get("type"),
-        terms: formData.get("terms"),
+        terms: formData.get("terms") === "on",
       };
 
-      apiClient.post(`/${data.type}`, {
-        name: data.name,
-        email: data.email,
-        password: data.password,
+      const parsedData = RegisterSchema.safeParse(data);
+      if (!parsedData.success) {
+        let errorMessage =
+          "<p class='mb-2'>Por favor, corrija os seguintes erros:</p>";
+
+        parsedData.error.issues.forEach((issue) => {
+          errorMessage += `<p class='mb-1'>- ${issue.message}</p>`;
+        });
+
+        showToast(
+          "error",
+          <div dangerouslySetInnerHTML={{ __html: errorMessage }} />
+        );
+        return;
+      }
+
+      await apiClient.post(`/${parsedData.data.type}`, {
+        name: parsedData.data.name,
+        email: parsedData.data.email,
+        password: parsedData.data.password,
       });
 
       showToast("success", <p>Cadastro feito com sucesso!</p>);
-    } catch (error) {
-      showToast("error", <p>Aconteceu um erro!</p>);
+    } catch (error: any) {
+      console.error(error);
+      showToast("error", <p>{error.message || "Ocorreu um erro!"}</p>);
     }
   }
 
