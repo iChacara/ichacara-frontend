@@ -5,27 +5,64 @@ import Link from "next/link";
 import IconRent from "@material-design-icons/svg/outlined/search.svg";
 import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.svg";
 import { useState } from "react";
+import { apiClient } from "@/api";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 export default function RegisterForm() {
   const [selectedType, setSelectedType] = useState("lessee");
-
+  
   function register(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+      const formData = new FormData(e.currentTarget);
 
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      confirmPassword: formData.get("confirmPassword"),
-      type: formData.get("type"),
-      terms: formData.get("terms"),
-    };
+      const data = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+        confirmPassword: formData.get("confirmPassword"),
+        type: formData.get("type"),
+        terms: formData.get("terms"),
+      };
+
+      apiClient.post(`/${data.type}`, {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      toast("🦄 Wow so easy!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
     <section className="flex flex-col gap-8 w-[calc(100%-4rem)] max-w-screen-md mx-auto ]">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        />
+        {/* Same as */}
+      <ToastContainer />
       <div className="flex flex-col gap-8 justify-center items-center">
         <figure>
           <Image

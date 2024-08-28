@@ -1,5 +1,6 @@
 import RegisterForm from "@/components/RegisterForm";
 import { Metadata } from "next";
+import { Bounce, ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "iChacara - Criar conta",
@@ -11,5 +12,5 @@ export default function RegisterPage() {
     <main className="h-dvh mt-24">
       <RegisterForm />
     </main>
-  )
+  );
 }
