@@ -8,9 +8,11 @@ import { useState } from "react";
 import { apiClient } from "@/api";
 import { showToast } from "@/lib/utils";
 import { RegisterSchema } from "@/lib/zodSchemas";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const [selectedType, setSelectedType] = useState("lessee");
+  const router = useRouter()
 
   async function register(e: React.FormEvent<HTMLFormElement>) {
     try {
@@ -50,9 +52,15 @@ export default function RegisterForm() {
       });
 
       showToast("success", <p>Cadastro feito com sucesso!</p>);
+
+      router.push('/');
     } catch (error: any) {
-      console.error(error);
-      showToast("error", <p>{error.message || "Ocorreu um erro!"}</p>);
+      showToast(
+        "error",
+        <p>
+          {error.response.data.message || error.message || "Ocorreu um erro!"}
+        </p>
+      );
     }
   }
 
@@ -87,7 +95,6 @@ export default function RegisterForm() {
           >
             Nome
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="text"
               name="name"
@@ -103,9 +110,8 @@ export default function RegisterForm() {
           >
             E-mail
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
-              type="email"
+              type="text"
               name="email"
               id="email"
               aria-label="Campo de email"
@@ -119,7 +125,6 @@ export default function RegisterForm() {
           >
             Senha
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="password"
               name="password"
@@ -134,7 +139,6 @@ export default function RegisterForm() {
           >
             Confirmar senha
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="password"
               name="confirmPassword"
@@ -199,7 +203,6 @@ export default function RegisterForm() {
           <div className="flex flex-col gap-4">
             <label htmlFor="terms" className="flex gap-3 items-center">
               <input
-                required
                 type="checkbox"
                 name="terms"
                 id="terms"
