@@ -5,14 +5,12 @@ import Link from "next/link";
 import IconRent from "@material-design-icons/svg/outlined/search.svg";
 import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.svg";
 import { useState } from "react";
-import { apiClient } from "@/api";
 import { showToast } from "@/lib/utils";
-import { RegisterSchema } from "@/lib/zodSchemas";
 import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const [selectedType, setSelectedType] = useState("lessee");
-  const router = useRouter()
+  const router = useRouter();
 
   async function register(e: React.FormEvent<HTMLFormElement>) {
     try {
@@ -29,37 +27,42 @@ export default function RegisterForm() {
         terms: formData.get("terms") === "on",
       };
 
-      const parsedData = RegisterSchema.safeParse(data);
-      if (!parsedData.success) {
-        let errorMessage =
-          "<p class='mb-2'>Por favor, corrija os seguintes erros:</p>";
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-        parsedData.error.issues.forEach((issue) => {
-          errorMessage += `<p class='mb-1'>- ${issue.message}</p>`;
-        });
+      const { errors, message } = await response.json();
 
-        showToast(
-          "error",
-          <div dangerouslySetInnerHTML={{ __html: errorMessage }} />
-        );
+      if (!response.ok) {
+        if (errors && Array.isArray(errors)) {
+          showToast(
+            "error",
+            <>
+              <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+              {errors.map((error: string, index: number) => (
+                <p key={index} className="mb-1">
+                  - {error}
+                </p>
+              ))}
+            </>
+          );
+        } else if (message) {
+          showToast("error", <p>{message}</p>);
+        } else {
+          showToast("error", <p>Ocorreu um erro desconhecido!</p>);
+        }
         return;
       }
 
-      await apiClient.post(`/${parsedData.data.type}`, {
-        name: parsedData.data.name,
-        email: parsedData.data.email,
-        password: parsedData.data.password,
-      });
+      showToast("success", <p>{message}</p>);
 
-      showToast("success", <p>Cadastro feito com sucesso!</p>);
-
-      router.push('/');
+      router.push("/");
     } catch (error: any) {
       showToast(
         "error",
-        <p>
-          {error.response.data.message || error.message || "Ocorreu um erro!"}
-        </p>
+        <p>{error.message || "Ocorreu um erro ao tentar registrar!"}</p>
       );
     }
   }
