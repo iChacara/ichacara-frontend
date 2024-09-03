@@ -5,23 +5,66 @@ import Link from "next/link";
 import IconRent from "@material-design-icons/svg/outlined/search.svg";
 import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.svg";
 import { useState } from "react";
+import { showToast } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const [selectedType, setSelectedType] = useState("lessee");
+  const router = useRouter();
 
-  function register(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function register(e: React.FormEvent<HTMLFormElement>) {
+    try {
+      e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+      const formData = new FormData(e.currentTarget);
 
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      confirmPassword: formData.get("confirmPassword"),
-      type: formData.get("type"),
-      terms: formData.get("terms"),
-    };
+      const data = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+        confirmPassword: formData.get("confirmPassword"),
+        type: formData.get("type"),
+        terms: formData.get("terms") === "on",
+      };
+
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const { errors, message } = await response.json();
+
+      if (!response.ok) {
+        if (errors && Array.isArray(errors)) {
+          showToast(
+            "error",
+            <>
+              <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+              {errors.map((error: string, index: number) => (
+                <p key={index} className="mb-1">
+                  - {error}
+                </p>
+              ))}
+            </>
+          );
+        } else if (message) {
+          showToast("error", <p>{message}</p>);
+        } else {
+          showToast("error", <p>Ocorreu um erro desconhecido!</p>);
+        }
+        return;
+      }
+
+      showToast("success", <p>{message}</p>);
+
+      router.push("/");
+    } catch (error: any) {
+      showToast(
+        "error",
+        <p>{error.message || "Ocorreu um erro ao tentar registrar!"}</p>
+      );
+    }
   }
 
   return (
@@ -55,7 +98,6 @@ export default function RegisterForm() {
           >
             Nome
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="text"
               name="name"
@@ -71,9 +113,8 @@ export default function RegisterForm() {
           >
             E-mail
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
-              type="email"
+              type="text"
               name="email"
               id="email"
               aria-label="Campo de email"
@@ -87,7 +128,6 @@ export default function RegisterForm() {
           >
             Senha
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="password"
               name="password"
@@ -102,7 +142,6 @@ export default function RegisterForm() {
           >
             Confirmar senha
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="password"
               name="confirmPassword"
@@ -167,7 +206,6 @@ export default function RegisterForm() {
           <div className="flex flex-col gap-4">
             <label htmlFor="terms" className="flex gap-3 items-center">
               <input
-                required
                 type="checkbox"
                 name="terms"
                 id="terms"

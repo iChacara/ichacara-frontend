@@ -1,18 +1,62 @@
 "use client";
 
+import { showToast } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
+
   async function login(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+      const formData = new FormData(e.currentTarget);
 
-    const data = {
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
+      const data = {
+        email: formData.get("email"),
+        password: formData.get("password"),
+      };
+
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const { errors, message } = await response.json();
+
+      if (!response.ok) {
+        if (errors && Array.isArray(errors)) {
+          showToast(
+            "error",
+            <>
+              <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+              {errors.map((error: string, index: number) => (
+                <p key={index} className="mb-1">
+                  - {error}
+                </p>
+              ))}
+            </>
+          );
+        } else if (message) {
+          showToast("error", <p>{message}</p>);
+        } else {
+          showToast("error", <p>Ocorreu um erro desconhecido!</p>);
+        }
+        return;
+      }
+
+      showToast("success", <p>{message}</p>);
+
+      // router.push("/");
+    } catch (error: any) {
+      showToast(
+        "error",
+        <p>{error.message || "Ocorreu um erro ao tentar logar!"}</p>
+      );
+    }
   }
 
   return (
@@ -46,9 +90,8 @@ export default function LoginForm() {
           >
             E-mail
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
-              type="email"
+              type="text"
               name="email"
               id="email"
               aria-label="Campo de email"
@@ -62,7 +105,6 @@ export default function LoginForm() {
           >
             Senha
             <input
-              required
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="password"
               name="password"
