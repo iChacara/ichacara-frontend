@@ -1,6 +1,5 @@
 import RegisterForm from "@/components/RegisterForm";
 import { Metadata } from "next";
-import { Bounce, ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "iChacara - Criar conta",
