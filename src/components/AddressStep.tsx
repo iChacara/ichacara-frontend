@@ -1,6 +1,16 @@
+"use client";
+
+import useStepsContext from "@/hooks/useStepsContext";
 import IconHelp from "@material-design-icons/svg/outlined/help_outline.svg";
 
 export default function AddressStep() {
+  const { formData, setFormData } = useStepsContext();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <label
@@ -22,6 +32,8 @@ export default function AddressStep() {
           id="cep"
           placeholder="Somente números"
           aria-label="Campo de CEP"
+          value={formData.cep}
+          onChange={handleChange}
         />
       </label>
 
@@ -37,6 +49,8 @@ export default function AddressStep() {
           id="street"
           placeholder="Ex.: Avenida Angélica"
           aria-label="Campo de rua"
+          value={formData.street}
+          onChange={handleChange}
         />
       </label>
 
@@ -52,6 +66,8 @@ export default function AddressStep() {
             name="number"
             id="number"
             aria-label="Campo de número"
+            value={formData.number}
+            onChange={handleChange}
           />
         </label>
 
@@ -72,6 +88,8 @@ export default function AddressStep() {
             id="complement"
             placeholder="Ex.: Fundos, bloco 4"
             aria-label="Campo de complemento"
+            value={formData.complement}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -88,6 +106,8 @@ export default function AddressStep() {
           id="neighborhood"
           placeholder="Ex.: Higienópolis"
           aria-label="Campo de bairro"
+          value={formData.neighborhood}
+          onChange={handleChange}
         />
       </label>
 
@@ -104,6 +124,8 @@ export default function AddressStep() {
             id="city"
             placeholder="Ex.: São Paulo"
             aria-label="Campo de cidade"
+            value={formData.city}
+            onChange={handleChange}
           />
         </label>
 
@@ -118,6 +140,8 @@ export default function AddressStep() {
             name="state"
             id="state"
             aria-label="Campo de estado"
+            value={formData.state}
+            onChange={handleChange}
           />
         </label>
       </div>
