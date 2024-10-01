@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 import IconRent from "@material-design-icons/svg/outlined/search.svg";
 import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.svg";
 import { useState } from "react";
