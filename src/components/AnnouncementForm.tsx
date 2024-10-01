@@ -1,24 +1,18 @@
 "use client";
 
 import IconArrowBack from "@material-design-icons/svg/outlined/arrow_back.svg";
-import AnnouncementSteps from "./AnnouncementSteps";
-import AddressStep from "./AddressStep";
-import AccommodationStep from "./AccommodationStep";
-import AvailableServicesStep from "./AvailableServicesStep";
-import ImagesStep from "./ImagesStep";
-import PropertyStep from "./PropertyStep";
-import PrecificationStep from "./PrecificationStep";
+import FormSteps from "./FormSteps";
 import { showToast } from "@/lib/utils";
+import useStepsContext from "@/hooks/useStepsContext";
 
 export default function AnnouncementForm() {
+  const { currentStep, next, prev, steps, formData } = useStepsContext();
+
   async function createAnnouncement(e: React.FormEvent<HTMLFormElement>) {
     try {
       e.preventDefault();
-      const formData = new FormData(e.currentTarget);
 
-      // const data = {
-      //
-      // };
+      console.log(formData);
 
       // const response = await fetch("/api/", {
       //   method: "POST",
@@ -69,39 +63,37 @@ export default function AnnouncementForm() {
       </button>
 
       <p className="font-poppins font-normal text-light-on-primary-container text-[1.5rem]/[2rem]">
-        Endereço
+        {steps[currentStep].name}
       </p>
 
       <form onSubmit={createAnnouncement} className="flex flex-col gap-6">
-        <AddressStep />
-        {/* <AccommodationStep /> */}
-        {/* <AvailableServicesStep /> */}
-        {/* <ImagesStep /> */}
-        {/* <PropertyStep /> */}
-        {/* <PrecificationStep /> */}
-      </form>
+        {steps[currentStep].component}
 
-      <div className="flex flex-col items-center fixed bottom-0 left-0 right-0 w-full gap-8 py-4 bg-white">
-        <div className="flex gap-8 items-center w-full justify-center">
-          <button
-            type="button"
-            aria-label="Voltar"
-            className="py-4 bg-white rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] border-[0.0625rem] border-light-primary text-light-primary -tracking-[0.0112rem] w-full max-w-36"
-          >
-            Voltar
-          </button>
+        <div className="flex flex-col items-center fixed bottom-0 left-0 right-0 w-full gap-8 py-4 bg-white">
+          <div className="flex gap-8 items-center w-full justify-center">
+            <button
+              type="button"
+              aria-label="Voltar"
+              className="py-4 bg-white rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] border-[0.0625rem] border-light-primary text-light-primary -tracking-[0.0112rem] w-full max-w-36 disabled:text-[#3B484866] disabled:border-[#3B484866] transition-all ease-in-out duration-300"
+              disabled={currentStep === 0 ? true : false}
+              onClick={prev}
+            >
+              Voltar
+            </button>
 
-          <button
-            type="button"
-            aria-label="Avançar"
-            className="py-4 bg-light-primary rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] text-white -tracking-[0.0112rem] w-full max-w-36"
-          >
-            Avançar
-          </button>
+            <button
+              type={steps.length - 1 === currentStep ? "submit" : "button"}
+              aria-label="Avançar"
+              className="py-4 bg-light-primary rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] text-white -tracking-[0.0112rem] w-full max-w-36 transition-all ease-in-out duration-300"
+              onClick={next}
+            >
+              Avançar
+            </button>
+          </div>
+
+          <FormSteps />
         </div>
-
-        <AnnouncementSteps />
-      </div>
+      </form>
     </section>
   );
 }
