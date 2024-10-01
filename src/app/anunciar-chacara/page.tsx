@@ -1,4 +1,6 @@
 import AnnouncementForm from "@/components/AnnouncementForm";
+import StepsContextProvider from "@/contexts/stepsContext";
+import { ANNOUNCEMENT_STEPS } from "@/utils/constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,8 +10,10 @@ export const metadata: Metadata = {
 
 export default function AnnouncementPage() {
   return (
-    <main className="h-dvh mt-8">
-      <AnnouncementForm />
-    </main>
+    <StepsContextProvider steps={ANNOUNCEMENT_STEPS}>
+      <main className="h-dvh pt-8">
+        <AnnouncementForm />
+      </main>
+    </StepsContextProvider>
   );
 }
