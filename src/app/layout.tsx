@@ -1,6 +1,6 @@
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import ToastProvider from "@/components/providers/ToastProvider";
+import ToastProvider from "@/providers/ToastProvider";
 
 const inter = Inter({
   subsets: ["latin"],
