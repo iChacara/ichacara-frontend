@@ -29,7 +29,7 @@ export const ANNOUNCEMENT_STEPS = [
   {
     key: "availableServices",
     name: "Serviços disponíveis",
-    fields: [],
+    fields: ["wifi", "airConditioner", "pool", "snooker", "garage"],
     component: <AvailableServicesStep />,
   },
   { key: "images", name: "Imagens", fields: [], component: <ImagesStep /> },
@@ -39,5 +39,51 @@ export const ANNOUNCEMENT_STEPS = [
     name: "Precificação",
     fields: [],
     component: <PrecificationStep />,
+  },
+];
+
+export const ANNOUNCEMENT_SERVICES = [
+  {
+    key: "wifi",
+    name: "Wi-Fi",
+  },
+  {
+    key: "airConditioner",
+    name: "Ar-condicionado",
+  },
+  {
+    key: "pool",
+    name: "Piscina",
+  },
+  {
+    key: "snooker",
+    name: "Bilhar",
+  },
+  {
+    key: "garage",
+    name: "Estacionamento",
+  },
+];
+
+export const ANNOUNCEMENT_FEATURES = [
+  {
+    key: "wifi",
+    name: "Wifi",
+  },
+  {
+    key: "airConditioner",
+    name: "Ar-condicionado",
+  },
+  {
+    key: "pool",
+    name: "Piscina",
+  },
+  {
+    key: "snooker",
+    name: "Bilhar",
+  },
+  {
+    key: "parking",
+    name: "Estacionamento",
   },
 ];
