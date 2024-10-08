@@ -33,11 +33,16 @@ export const ANNOUNCEMENT_STEPS = [
     component: <AvailableServicesStep />,
   },
   { key: "images", name: "Imagens", fields: [], component: <ImagesStep /> },
-  { key: "property", name: "Chácara", fields: [], component: <PropertyStep /> },
+  {
+    key: "property",
+    name: "Chácara",
+    fields: ["propertyName", "announcementTitle", "propertyDescription"],
+    component: <PropertyStep />,
+  },
   {
     key: "precification",
     name: "Precificação",
-    fields: [],
+    fields: ["propertyPrice"],
     component: <PrecificationStep />,
   },
 ];
