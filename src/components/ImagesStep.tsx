@@ -28,7 +28,7 @@ export default function ImagesStep() {
         {images.map((image) => {
           const src = URL.createObjectURL(image);
           return (
-            <div className="flex items-center p-2 bg-[#F4FBF9] border border-[#9CF1F1] rounded-lg justify-between">
+            <div key={image.name} className="flex items-center p-2 bg-[#F4FBF9] border border-[#9CF1F1] rounded-lg justify-between">
               <div className="flex items-center gap-4">
                 <figure className="w-10 h-10 rounded max-w-10 max-h-10 relative overflow-hidden">
                   <Image
