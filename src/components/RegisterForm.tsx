@@ -5,11 +5,16 @@ import Link from "next/link";
 import React from "react";
 import IconRent from "@material-design-icons/svg/outlined/search.svg";
 import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.svg";
+import IconInvisible from "@material-design-icons/svg/filled/visibility.svg";
+import IconVisible from "@material-design-icons/svg/filled/visibility_off.svg";
 import { useState } from "react";
 import { showToast } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+  const [visiblePass, setVisiblePass] = useState(false);
+  const [visibleConfirmPass, setVisibleConfirmPass] = useState(false);
+
   const [selectedType, setSelectedType] = useState("lessee");
   const router = useRouter();
 
@@ -125,30 +130,60 @@ export default function RegisterForm() {
 
           <label
             htmlFor="password"
-            className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
+            className="relative flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
           >
             Senha
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
-              type="password"
+              type={visiblePass ? "text" : "password"}
               name="password"
               id="password"
               aria-label="Campo de senha"
             />
+            {visiblePass ? (
+              <IconVisible
+                className="absolute max-w-6 max-h-6 fill-[#91A1A1] bottom-2 right-2 cursor-pointer"
+                width={24}
+                height={24}
+                onClick={() => setVisiblePass(false)}
+              />
+            ) : (
+              <IconInvisible
+                className="absolute max-w-6 max-h-6 fill-[#91A1A1] bottom-2 right-2 cursor-pointer"
+                width={24}
+                height={24}
+                onClick={() => setVisiblePass(true)}
+              />
+            )}
           </label>
 
           <label
             htmlFor="confirmPassword"
-            className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
+            className="relative flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
           >
             Confirmar senha
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
-              type="password"
+              type={visibleConfirmPass ? "text" : "password"}
               name="confirmPassword"
               id="confirmPassword"
               aria-label="Campo de confirmar senha"
             />
+            {visibleConfirmPass ? (
+              <IconVisible
+                className="absolute max-w-6 max-h-6 fill-[#91A1A1] bottom-2 right-2 cursor-pointer"
+                width={24}
+                height={24}
+                onClick={() => setVisibleConfirmPass(false)}
+              />
+            ) : (
+              <IconInvisible
+                className="absolute max-w-6 max-h-6 fill-[#91A1A1] bottom-2 right-2 cursor-pointer"
+                width={24}
+                height={24}
+                onClick={() => setVisibleConfirmPass(true)}
+              />
+            )}
           </label>
 
           <span className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]">

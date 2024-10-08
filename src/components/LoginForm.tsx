@@ -1,12 +1,16 @@
 "use client";
 
 import { showToast } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import IconInvisible from "@material-design-icons/svg/filled/visibility.svg";
+import IconVisible from "@material-design-icons/svg/filled/visibility_off.svg";
 
 export default function LoginForm() {
+  const [visible, setVisible] = useState(false);
+
   const router = useRouter();
 
   async function login(e: React.FormEvent<HTMLFormElement>) {
@@ -102,16 +106,31 @@ export default function LoginForm() {
 
           <label
             htmlFor="password"
-            className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
+            className="relative flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
           >
             Senha
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
-              type="password"
+              type={visible ? "text" : "password"}
               name="password"
               id="password"
               aria-label="Campo de senha"
             />
+            {visible ? (
+              <IconVisible
+                className="absolute max-w-6 max-h-6 fill-[#91A1A1] bottom-2 right-2 cursor-pointer"
+                width={24}
+                height={24}
+                onClick={() => setVisible(false)}
+              />
+            ) : (
+              <IconInvisible
+                className="absolute max-w-6 max-h-6 fill-[#91A1A1] bottom-2 right-2 cursor-pointer"
+                width={24}
+                height={24}
+                onClick={() => setVisible(true)}
+              />
+            )}
           </label>
         </div>
 
