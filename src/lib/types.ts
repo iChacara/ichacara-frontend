@@ -13,4 +13,5 @@ export type StepsContextType = {
   steps: Step[];
   formData: Record<string, string>;
   setFormData: Dispatch<SetStateAction<Record<string, string>>>;
+  errors: Record<string, string[]>;
 };
