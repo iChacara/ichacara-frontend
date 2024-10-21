@@ -6,44 +6,17 @@ import { showToast } from "@/lib/utils";
 import useStepsContext from "@/hooks/useStepsContext";
 
 export default function AnnouncementForm() {
-  const { currentStep, next, prev, steps, formData } = useStepsContext();
+  const { currentStep, steps, next, prev, formData } = useStepsContext();
+
+  async function handleNext() {
+    await next();
+  }
 
   async function createAnnouncement(e: React.FormEvent<HTMLFormElement>) {
     try {
       e.preventDefault();
 
-      console.log(formData);
-
-      // const response = await fetch("/api/", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(data),
-      // });
-
-      // const { errors, message } = await response.json();
-
-      // if (!response.ok) {
-      //   if (errors && Array.isArray(errors)) {
-      //     showToast(
-      //       "error",
-      //       <>
-      //         <p className="mb-2">Por favor, corrija os seguintes erros:</p>
-      //         {errors.map((error: string, index: number) => (
-      //           <p key={index} className="mb-1">
-      //             - {error}
-      //           </p>
-      //         ))}
-      //       </>
-      //     );
-      //   } else if (message) {
-      //     showToast("error", <p>{message}</p>);
-      //   } else {
-      //     showToast("error", <p>Ocorreu um erro desconhecido!</p>);
-      //   }
-      //   return;
-      // }
-
-      // showToast("success", <p>{message}</p>);
+      console.log("ENVIAR PARA API");
     } catch (error: any) {
       showToast(
         "error",
@@ -69,13 +42,13 @@ export default function AnnouncementForm() {
       <form onSubmit={createAnnouncement} className="flex flex-col gap-6">
         {steps[currentStep].component}
 
-        <div className="flex flex-col items-center fixed bottom-0 left-0 right-0 w-full gap-8 py-4 bg-white">
+        <div className="flex flex-col items-center w-full gap-8 py-4 bg-white">
           <div className="flex gap-8 items-center w-full justify-center">
             <button
               type="button"
               aria-label="Voltar"
               className="py-4 bg-white rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] border-[0.0625rem] border-light-primary text-light-primary -tracking-[0.0112rem] w-full max-w-36 disabled:text-[#3B484866] disabled:border-[#3B484866] transition-all ease-in-out duration-300"
-              disabled={currentStep === 0 ? true : false}
+              disabled={currentStep === 0}
               onClick={prev}
             >
               Voltar
@@ -85,7 +58,7 @@ export default function AnnouncementForm() {
               type={steps.length - 1 === currentStep ? "submit" : "button"}
               aria-label="Avançar"
               className="py-4 bg-light-primary rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] text-white -tracking-[0.0112rem] w-full max-w-36 transition-all ease-in-out duration-300"
-              onClick={next}
+              onClick={handleNext}
             >
               Avançar
             </button>

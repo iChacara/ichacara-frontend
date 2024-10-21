@@ -1,15 +1,36 @@
 "use client";
 
+import { useCEP } from "@/hooks/useCEP";
 import useStepsContext from "@/hooks/useStepsContext";
+import { showToast } from "@/lib/utils";
+import { CEPMask } from "@/utils/masks";
 import IconHelp from "@material-design-icons/svg/outlined/help_outline.svg";
+import { useEffect } from "react";
 
 export default function AddressStep() {
   const { formData, setFormData } = useStepsContext();
+  const { data, error, fetchCEP } = useCEP();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    if (data) {
+      data.erro && showToast("error", <p>Cep inválido</p>);
+
+      setFormData((prev) => ({
+        ...prev,
+        street: data.logradouro || "",
+        neighborhood: data.bairro || "",
+        city: data.localidade || "",
+        state: data.uf || "",
+      }));
+    }
+
+    error && showToast("error", <p>{error}</p>);
+  }, [data, error, setFormData]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -33,7 +54,17 @@ export default function AddressStep() {
           placeholder="Somente números"
           aria-label="Campo de CEP"
           value={formData.cep}
-          onChange={handleChange}
+          onChange={(e) => {
+            const maskedCEP = CEPMask(e.target.value);
+            handleChange({
+              target: {
+                name: "cep",
+                value: maskedCEP,
+              },
+            } as React.ChangeEvent<HTMLInputElement>);
+
+            maskedCEP.length === 9 && fetchCEP(maskedCEP);
+          }}
         />
       </label>
 
