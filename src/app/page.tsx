@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <main className="h-dvh mt-24">
+    <main className="min-h-dvh h-full mt-24">
       <LoginForm />
     </main>
   );

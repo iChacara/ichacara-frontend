@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function AnnouncementPage() {
   return (
     <StepsContextProvider steps={ANNOUNCEMENT_STEPS}>
-      <main className="h-dvh pt-8">
+      <main className="min-h-dvh h-full pt-8">
         <AnnouncementForm />
       </main>
     </StepsContextProvider>
