@@ -1,13 +1,10 @@
 "use client";
 
-import useStepsContext from "@/hooks/useStepsContext";
 import { ANNOUNCEMENT_SERVICES } from "@/utils/constants";
 import IconCheck from "@material-design-icons/svg/outlined/check.svg";
 import React from "react";
 
 export default function AvailableServicesStep() {
-  // const { formData, setFormData } = useStepsContext();
-
   return (
     <>
       <div className="flex flex-wrap gap-4">

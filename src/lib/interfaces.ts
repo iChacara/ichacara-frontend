@@ -1,16 +1,27 @@
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { AnnouncementFormValues } from "./types";
+
 export interface ProviderProps {
   children: React.ReactNode;
 }
 
-export interface Step {
-  key: string;
+export interface RegisterFormData {
   name: string;
-  fields: any[];
-  component: JSX.Element;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  type: string;
+  terms: boolean;
 }
 
-export interface StepsContextProviderProps extends ProviderProps {
-  steps: Step[];
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export interface AnnouncementAddressStepProps {
+  register: UseFormRegister<AnnouncementFormValues>;
+  errors: FieldErrors<AnnouncementFormValues["address"]>;
 }
 
 export interface CEPData {

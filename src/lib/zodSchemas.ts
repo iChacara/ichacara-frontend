@@ -29,8 +29,8 @@ export const LoginSchema = z.object({
   password: z.string().min(8, { message: "Email ou senha inválidos" }),
 });
 
-export const AnnouncementSchema = z.object({
-  //address
+// Announcement schema
+const addressSchema = z.object({
   cep: z
     .string()
     .min(1, { message: "O CEP é obrigatório" })
@@ -41,7 +41,7 @@ export const AnnouncementSchema = z.object({
     .min(1, { message: "O número é obrigatório" })
     .regex(/^\d+$/, { message: "O número deve ser um valor numérico" }),
   complement: z.string().optional(),
-  neighborhood: z.string().min(1, { message: "O bairro é obrigatório" }),
+  district: z.string().min(1, { message: "O bairro é obrigatório" }),
   city: z.string().min(1, { message: "A cidade é obrigatória" }),
   state: z
     .string()
@@ -49,41 +49,54 @@ export const AnnouncementSchema = z.object({
     .regex(/^[A-Z]+$/, {
       message: "O estado deve ser composto apenas por letras maiúsculas",
     }),
-  //accommodation
-  rooms: z
+});
+
+const accommodationSchema = z.object({
+  numRooms: z
     .string()
     .min(1, { message: "O preenchimento do número de quartos é obrigatório" })
     .regex(/^\d+$/, { message: "O número deve ser um valor numérico" }),
-  beds: z
+  numBeds: z
     .string()
     .min(1, { message: "O preenchimento do número de camas é obrigatório" })
     .regex(/^\d+$/, { message: "O número deve ser um valor numérico" }),
-  bathrooms: z
+  numBathrooms: z
     .string()
     .min(1, { message: "O preenchimento do número de banheiros é obrigatório" })
     .regex(/^\d+$/, { message: "O número deve ser um valor numérico" }),
-  lotation: z
+  maxOccupancy: z
     .string()
     .min(1, { message: "A lotação deve ser maior que 0" })
     .regex(/^\d+$/, { message: "O número deve ser um valor numérico" }),
-  //availableServices
-  wifi: z.boolean({ message: "Erro" }),
-  airConditioner: z.boolean({ message: "Erro" }),
-  pool: z.boolean({ message: "Erro" }),
-  snooker: z.boolean({ message: "Erro" }),
-  garage: z.boolean({ message: "Erro" }),
-  //property
-  propertyName: z
-    .string()
-    .min(1, { message: "O nome da chácara é obrigatório" }),
-  announcementTitle: z
-    .string()
-    .min(1, { message: "O título do anúncio é obrigatório" }),
-  propertyDescription: z
+});
+
+const servicesSchema = z.object({
+  services: z.array(z.string()).optional(),
+});
+
+const highlightsSchema = z.object({
+  highlights: z.array(z.number()).optional(),
+});
+
+const propertyInfoSchema = z.object({
+  name: z.string().min(1, { message: "O nome da chácara é obrigatório" }),
+  title: z.string().min(1, { message: "O título do anúncio é obrigatório" }),
+  description: z
     .string()
     .min(1, { message: "A descrição da propriedade é obrigatória" }),
-  //precification
-  propertyPrice: z
-    .number()
+});
+
+const pricingSchema = z.object({
+  dailyPrice: z
+    .number({ invalid_type_error: "O preço deve ser um número" })
     .min(0, { message: "O preço da propriedade deve ser maior que 0" }),
+});
+
+export const announcementSchema = z.object({
+  address: addressSchema,
+  accommodation: accommodationSchema,
+  services: servicesSchema,
+  highlights: highlightsSchema,
+  propertyInfo: propertyInfoSchema,
+  pricing: pricingSchema,
 });

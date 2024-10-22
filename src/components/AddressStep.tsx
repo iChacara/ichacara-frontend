@@ -1,36 +1,30 @@
 "use client";
 
-import { useCEP } from "@/hooks/useCEP";
-import useStepsContext from "@/hooks/useStepsContext";
 import { showToast } from "@/lib/utils";
 import { CEPMask } from "@/utils/masks";
 import IconHelp from "@material-design-icons/svg/outlined/help_outline.svg";
 import { useEffect } from "react";
+import { AnnouncementAddressStepProps } from "@/lib/interfaces";
 
-export default function AddressStep() {
-  const { formData, setFormData } = useStepsContext();
-  const { data, error, fetchCEP } = useCEP();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
+export default function AddressStep({
+  register,
+  errors,
+}: AnnouncementAddressStepProps) {
   useEffect(() => {
-    if (data) {
-      data.erro && showToast("error", <p>Cep inválido</p>);
-
-      setFormData((prev) => ({
-        ...prev,
-        street: data.logradouro || "",
-        neighborhood: data.bairro || "",
-        city: data.localidade || "",
-        state: data.uf || "",
-      }));
+    if (Object.keys(errors).length > 0) {
+      showToast(
+        "error",
+        <>
+          <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+          {Object.entries(errors).map(([key, value]) => (
+            <p key={key} className="mb-1">
+              - {value.message}
+            </p>
+          ))}
+        </>
+      );
     }
-
-    error && showToast("error", <p>{error}</p>);
-  }, [data, error, setFormData]);
+  }, [errors]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -47,24 +41,18 @@ export default function AddressStep() {
           />
         </p>
         <input
+          {...register("address.cep", {
+            setValueAs: (value: string) => CEPMask(value),
+          })}
+          onChange={(e) => {
+            const maskedValue = CEPMask(e.target.value);
+            e.target.value = maskedValue;
+          }}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
-          name="cep"
           id="cep"
           placeholder="Somente números"
           aria-label="Campo de CEP"
-          value={formData.cep}
-          onChange={(e) => {
-            const maskedCEP = CEPMask(e.target.value);
-            handleChange({
-              target: {
-                name: "cep",
-                value: maskedCEP,
-              },
-            } as React.ChangeEvent<HTMLInputElement>);
-
-            maskedCEP.length === 9 && fetchCEP(maskedCEP);
-          }}
         />
       </label>
 
@@ -74,14 +62,12 @@ export default function AddressStep() {
       >
         Rua
         <input
+          {...register("address.street")}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
-          name="street"
           id="street"
           placeholder="Ex.: Avenida Angélica"
           aria-label="Campo de rua"
-          value={formData.street}
-          onChange={handleChange}
         />
       </label>
 
@@ -92,13 +78,12 @@ export default function AddressStep() {
         >
           Número
           <input
+            {...register("address.number")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
             name="number"
             id="number"
             aria-label="Campo de número"
-            value={formData.number}
-            onChange={handleChange}
           />
         </label>
 
@@ -113,32 +98,30 @@ export default function AddressStep() {
             </span>
           </p>
           <input
+            {...register("address.complement")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
             name="complement"
             id="complement"
             placeholder="Ex.: Fundos, bloco 4"
             aria-label="Campo de complemento"
-            value={formData.complement}
-            onChange={handleChange}
           />
         </label>
       </div>
 
       <label
-        htmlFor="neighborhood"
+        htmlFor="district"
         className="flex flex-col gap-2 font-poppins font-bold text-base text-[#3B4848] -tracking-[0.019rem]"
       >
         Bairro
         <input
+          {...register("address.district")}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
-          name="neighborhood"
-          id="neighborhood"
+          name="district"
+          id="district"
           placeholder="Ex.: Higienópolis"
           aria-label="Campo de bairro"
-          value={formData.neighborhood}
-          onChange={handleChange}
         />
       </label>
 
@@ -149,14 +132,13 @@ export default function AddressStep() {
         >
           Cidade
           <input
+            {...register("address.city")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
             name="city"
             id="city"
             placeholder="Ex.: São Paulo"
             aria-label="Campo de cidade"
-            value={formData.city}
-            onChange={handleChange}
           />
         </label>
 
@@ -166,13 +148,12 @@ export default function AddressStep() {
         >
           Estado
           <input
+            {...register("address.state")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
             name="state"
             id="state"
             aria-label="Campo de estado"
-            value={formData.state}
-            onChange={handleChange}
           />
         </label>
       </div>

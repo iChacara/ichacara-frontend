@@ -1,24 +1,30 @@
 "use client";
 
-import useStepsContext from "@/hooks/useStepsContext";
+interface FormStepsProps {
+  currentStep: number;
+  steps: string[];
+}
 
-export default function FormSteps() {
-  const { currentStep, steps } = useStepsContext();
-
+export default function FormSteps({ currentStep, steps }: FormStepsProps) {
   return (
     <nav aria-label="Progress">
       <ul role="list" className="flex gap-2 justify-center items-center">
         {steps.map((step, index) => (
           <li
-            key={step.key}
+            key={index}
             className={`border-[0.0625rem] w-3 h-3 rounded-full 
-              ${currentStep > index ? "completed " : ""}
-              ${currentStep === index ? "active " : ""}
               ${
-                currentStep < index
-                  ? "border-[#6F7978] upcoming"
-                  : "bg-light-primary border-light-primary"
-              }`}
+                currentStep > index
+                  ? "bg-light-primary border-light-primary"
+                  : ""
+              }
+              ${
+                currentStep === index
+                  ? "bg-light-primary border-light-primary"
+                  : ""
+              }
+              ${currentStep < index ? "border-[#6F7978]" : ""}
+            `}
           ></li>
         ))}
       </ul>
