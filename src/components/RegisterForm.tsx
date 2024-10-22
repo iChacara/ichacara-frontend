@@ -2,37 +2,30 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import IconRent from "@material-design-icons/svg/outlined/search.svg";
 import IconAnnounce from "@material-design-icons/svg/outlined/emergency_share.svg";
 import IconInvisible from "@material-design-icons/svg/filled/visibility.svg";
 import IconVisible from "@material-design-icons/svg/filled/visibility_off.svg";
-import { useState } from "react";
-import { showToast } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { showToast } from "@/lib/utils";
+import { RegisterFormData } from "@/lib/interfaces";
 
 export default function RegisterForm() {
   const [visiblePass, setVisiblePass] = useState(false);
   const [visibleConfirmPass, setVisibleConfirmPass] = useState(false);
-
   const [selectedType, setSelectedType] = useState("lessee");
   const router = useRouter();
 
-  async function register(e: React.FormEvent<HTMLFormElement>) {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<RegisterFormData>();
+
+  async function onSubmit(data: RegisterFormData) {
     try {
-      e.preventDefault();
-
-      const formData = new FormData(e.currentTarget);
-
-      const data = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-        confirmPassword: formData.get("confirmPassword"),
-        type: formData.get("type"),
-        terms: formData.get("terms") === "on",
-      };
-
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,7 +56,6 @@ export default function RegisterForm() {
       }
 
       showToast("success", <p>{message}</p>);
-
       router.push("/");
     } catch (error: any) {
       showToast(
@@ -96,7 +88,7 @@ export default function RegisterForm() {
         </div>
       </div>
 
-      <form onSubmit={register} className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
           <label
             htmlFor="name"
@@ -106,10 +98,10 @@ export default function RegisterForm() {
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="text"
-              name="name"
               id="name"
               aria-label="Campo de nome"
               autoComplete="off"
+              {...register("name")}
             />
           </label>
 
@@ -120,11 +112,11 @@ export default function RegisterForm() {
             E-mail
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
-              type="text"
-              name="email"
+              type="email"
               id="email"
               aria-label="Campo de email"
               autoComplete="off"
+              {...register("email")}
             />
           </label>
 
@@ -136,9 +128,9 @@ export default function RegisterForm() {
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type={visiblePass ? "text" : "password"}
-              name="password"
               id="password"
               aria-label="Campo de senha"
+              {...register("password")}
             />
             {visiblePass ? (
               <IconVisible
@@ -165,9 +157,9 @@ export default function RegisterForm() {
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type={visibleConfirmPass ? "text" : "password"}
-              name="confirmPassword"
               id="confirmPassword"
               aria-label="Campo de confirmar senha"
+              {...register("confirmPassword")}
             />
             {visibleConfirmPass ? (
               <IconVisible
@@ -203,10 +195,10 @@ export default function RegisterForm() {
                 <input
                   className="hidden"
                   type="radio"
-                  name="type"
                   value="lessee"
                   id="lessee"
                   aria-label="Campo de quero alugar"
+                  {...register("type")}
                   checked={selectedType === "lessee"}
                   onChange={() => setSelectedType("lessee")}
                 />
@@ -226,10 +218,10 @@ export default function RegisterForm() {
                 <input
                   className="hidden"
                   type="radio"
-                  name="type"
                   value="lessor"
                   id="lessor"
                   aria-label="Campo de quero anunciar"
+                  {...register("type")}
                   checked={selectedType === "lessor"}
                   onChange={() => setSelectedType("lessor")}
                 />
@@ -243,12 +235,11 @@ export default function RegisterForm() {
             <label htmlFor="terms" className="flex gap-3 items-center">
               <input
                 type="checkbox"
-                name="terms"
                 id="terms"
                 aria-label="Campo de confirmar com termos e condições"
                 className="appearance-none min-w-4 min-h-4 border-[0.0625rem] border-[#757575] rounded bg-white checked:bg-light-primary checked:border-light-primary transition-all ease-in-out duration-300"
+                {...register("terms")}
               />
-
               <span className="font-inter font-medium text-[1rem]/[1.5rem] text-[#1E1E1E] tracking-[0.0094rem]">
                 Concordo com os{" "}
                 <Link
@@ -265,7 +256,10 @@ export default function RegisterForm() {
             <button
               type="submit"
               aria-label="Criar conta"
-              className="py-4 bg-light-primary rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] text-white -tracking-[0.0112rem]"
+              className={`py-4 rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] text-white -tracking-[0.0112rem] transition-all ease-in-out duration-300 ${
+                isSubmitting ? "bg-[#3B484866]" : "bg-light-primary"
+              }`}
+              disabled={isSubmitting}
             >
               Criar conta
             </button>

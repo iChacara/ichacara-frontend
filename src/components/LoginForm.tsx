@@ -7,23 +7,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import IconInvisible from "@material-design-icons/svg/filled/visibility.svg";
 import IconVisible from "@material-design-icons/svg/filled/visibility_off.svg";
+import { useForm } from "react-hook-form";
+import { LoginFormData } from "@/lib/interfaces";
 
 export default function LoginForm() {
   const [visible, setVisible] = useState(false);
-
   const router = useRouter();
 
-  async function login(e: React.FormEvent<HTMLFormElement>) {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<LoginFormData>();
+
+  async function login(data: LoginFormData) {
     try {
-      e.preventDefault();
-
-      const formData = new FormData(e.currentTarget);
-
-      const data = {
-        email: formData.get("email"),
-        password: formData.get("password"),
-      };
-
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,7 +52,6 @@ export default function LoginForm() {
       }
 
       showToast("success", <p>{message}</p>);
-
       // router.push("/");
     } catch (error: any) {
       showToast(
@@ -87,7 +84,7 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <form onSubmit={login} className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit(login)} className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
           <label
             htmlFor="email"
@@ -97,10 +94,10 @@ export default function LoginForm() {
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type="text"
-              name="email"
               id="email"
               aria-label="Campo de email"
               autoComplete="off"
+              {...register("email")}
             />
           </label>
 
@@ -112,9 +109,9 @@ export default function LoginForm() {
             <input
               className="border-[0.0625rem] border-[#B6C9C8] h-10 p-2 rounded-lg font-normal text-sm"
               type={visible ? "text" : "password"}
-              name="password"
               id="password"
               aria-label="Campo de senha"
+              {...register("password")}
             />
             {visible ? (
               <IconVisible
@@ -146,7 +143,10 @@ export default function LoginForm() {
             <button
               type="submit"
               aria-label="Entrar"
-              className="py-4 bg-light-primary rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] text-white -tracking-[0.0112rem]"
+              className={`py-4 rounded-lg font-inter font-bold text-[1.125rem]/[1.5rem] text-white -tracking-[0.0112rem] transition-all ease-in-out duration-300 ${
+                isSubmitting ? "bg-[#3B484866]" : "bg-light-primary"
+              }`}
+              disabled={isSubmitting}
             >
               Entrar
             </button>

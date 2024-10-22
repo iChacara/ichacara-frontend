@@ -16,7 +16,13 @@ export async function POST(request: Request) {
       );
     }
 
-    await apiClient.post(`/${parsedData.data.type}`, parsedData.data);
+    const filteredData = {
+      name: parsedData.data.name,
+      email: parsedData.data.email,
+      password: parsedData.data.password,
+    };
+
+    await apiClient.post(`/${parsedData.data.type}`, filteredData);
 
     return NextResponse.json({ message: "Cadastro feito com sucesso!" });
   } catch (error: any) {
