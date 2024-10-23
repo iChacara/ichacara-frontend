@@ -121,22 +121,27 @@ export default function AnnouncementForm() {
             setValue={setValue}
           />
         )}
-        {/* {currentStep === 1 && (
+        {currentStep === 1 && (
           <AccommodationStep
             register={register}
-            errors={errors.accommodation}
+            errors={errors.accommodation || {}}
           />
         )}
         {currentStep === 2 && (
-          <AvailableServicesStep register={register} errors={errors.services} />
+          <AvailableServicesStep
+            register={register}
+            errors={errors.services || {}}
+            setValue={setValue}
+            watch={watch}
+          />
         )}
-        {currentStep === 3 && (
+        {/* {currentStep === 3 && (
           <ImagesStep register={register} errors={errors.highlights} />
-        )}
-        {currentStep === 4 && (
+        )} */}
+        {/* {currentStep === 4 && (
           <PropertyStep register={register} errors={errors.propertyInfo} />
-        )}
-        {currentStep === 5 && (
+        )} */}
+        {/* {currentStep === 5 && (
           <PrecificationStep register={register} errors={errors.pricing} />
         )} */}
 

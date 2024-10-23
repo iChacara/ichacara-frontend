@@ -1,8 +1,30 @@
 "use client";
 
+import { AnnouncementAccommodationStepProps } from "@/lib/interfaces";
+import { showToast } from "@/lib/utils";
 import IconHelp from "@material-design-icons/svg/outlined/help_outline.svg";
+import { useEffect } from "react";
 
-export default function AccommodationStep() {
+export default function AccommodationStep({
+  register,
+  errors,
+}: AnnouncementAccommodationStepProps) {
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      showToast(
+        "error",
+        <>
+          <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+          {Object.entries(errors).map(([key, value]) => (
+            <p key={key} className="mb-1">
+              - {value.message}
+            </p>
+          ))}
+        </>
+      );
+    }
+  }, [errors]);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-[0.375rem]">
@@ -12,14 +34,12 @@ export default function AccommodationStep() {
         >
           Nº de quartos
           <input
+            {...register("accommodation.numRooms")}
             className="[&::-webkit-inner-spin-button]:appearance-none border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="number"
-            name="numRooms"
             id="numRooms"
             placeholder="Somente números"
             aria-label="Campo de número de quartos"
-            // value={formData.numRooms}
-            // onChange={handleChange}
           />
         </label>
 
@@ -29,14 +49,12 @@ export default function AccommodationStep() {
         >
           Nº de camas
           <input
+            {...register("accommodation.numBeds")}
             className="[&::-webkit-inner-spin-button]:appearance-none border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="number"
-            name="numBeds"
             id="numBeds"
             placeholder="Somente números"
             aria-label="Campo de número de camas"
-            // value={formData.numBeds}
-            // onChange={handleChange}
           />
         </label>
       </div>
@@ -47,14 +65,12 @@ export default function AccommodationStep() {
       >
         Número de banheiros
         <input
+          {...register("accommodation.numBathrooms")}
           className="[&::-webkit-inner-spin-button]:appearance-none flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="number"
-          name="numBathrooms"
           id="numBathrooms"
           placeholder="Somente números"
           aria-label="Campo de número de banheiros"
-          // value={formData.numBathrooms}
-          // onChange={handleChange}
         />
       </label>
 
@@ -71,14 +87,12 @@ export default function AccommodationStep() {
           />
         </p>
         <input
+          {...register("accommodation.maxOccupancy")}
           className="[&::-webkit-inner-spin-button]:appearance-none flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="number"
-          name="maxOccupancy"
           id="maxOccupancy"
           placeholder="Somente números"
           aria-label="Campo de lotação máxima"
-          // value={formData.maxOccupancy}
-          // onChange={handleChange}
         />
       </label>
     </div>

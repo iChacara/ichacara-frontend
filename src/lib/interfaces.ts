@@ -1,4 +1,9 @@
-import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import { AnnouncementFormValues } from "./types";
 
 export interface ProviderProps {
@@ -23,6 +28,33 @@ export interface AnnouncementAddressStepProps {
   register: UseFormRegister<AnnouncementFormValues>;
   errors: FieldErrors<AnnouncementFormValues["address"]>;
   setValue: UseFormSetValue<AnnouncementFormValues>;
+}
+
+export interface AnnouncementAccommodationStepProps {
+  register: UseFormRegister<AnnouncementFormValues>;
+  errors: FieldErrors<AnnouncementFormValues["accommodation"]>;
+}
+
+export interface AnnouncementServicesStepProps {
+  register: UseFormRegister<AnnouncementFormValues>;
+  errors: FieldErrors<AnnouncementFormValues["services"]>;
+  setValue: UseFormSetValue<AnnouncementFormValues>;
+  watch: UseFormWatch<AnnouncementFormValues>;
+}
+
+export interface AnnouncementHighlightsStepProps {
+  register: UseFormRegister<AnnouncementFormValues>;
+  errors: FieldErrors<AnnouncementFormValues["highlights"]>;
+}
+
+export interface AnnouncementPropertyInfoStepProps {
+  register: UseFormRegister<AnnouncementFormValues>;
+  errors: FieldErrors<AnnouncementFormValues["propertyInfo"]>;
+}
+
+export interface AnnouncementPricingStepProps {
+  register: UseFormRegister<AnnouncementFormValues>;
+  errors: FieldErrors<AnnouncementFormValues["pricing"]>;
 }
 
 export interface CEPData {

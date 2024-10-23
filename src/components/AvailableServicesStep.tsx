@@ -1,10 +1,16 @@
 "use client";
 
+import { AnnouncementServicesStepProps } from "@/lib/interfaces";
 import { ANNOUNCEMENT_SERVICES } from "@/utils/constants";
 import IconCheck from "@material-design-icons/svg/outlined/check.svg";
 import React from "react";
 
-export default function AvailableServicesStep() {
+export default function AvailableServicesStep({
+  register,
+  errors,
+  setValue,
+  watch,
+}: AnnouncementServicesStepProps) {
   return (
     <>
       <div className="flex flex-wrap gap-4">
@@ -37,7 +43,7 @@ export default function AvailableServicesStep() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-8">
+      {/* <div className="flex flex-col gap-8">
         <p className="font-poppins font-normal text-light-on-primary-container text-[1.5rem]/[2rem]">
           Destaques
         </p>
@@ -71,7 +77,7 @@ export default function AvailableServicesStep() {
             </label>
           ))}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
