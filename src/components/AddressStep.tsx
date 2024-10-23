@@ -2,6 +2,7 @@
 
 import { showToast } from "@/lib/utils";
 import { CEPMask } from "@/utils/masks";
+import { useCEP } from "@/hooks/useCEP";
 import IconHelp from "@material-design-icons/svg/outlined/help_outline.svg";
 import { useEffect } from "react";
 import { AnnouncementAddressStepProps } from "@/lib/interfaces";
@@ -9,7 +10,10 @@ import { AnnouncementAddressStepProps } from "@/lib/interfaces";
 export default function AddressStep({
   register,
   errors,
+  setValue,
 }: AnnouncementAddressStepProps) {
+  const { data, fetchCEP } = useCEP();
+
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
       showToast(
@@ -25,6 +29,25 @@ export default function AddressStep({
       );
     }
   }, [errors]);
+
+  useEffect(() => {
+    if (data) {
+      setValue("address.street", data.logradouro || "");
+      setValue("address.complement", data.complemento || "");
+      setValue("address.district", data.bairro || "");
+      setValue("address.city", data.localidade || "");
+      setValue("address.state", data.uf || "");
+    }
+  }, [data, register]);
+
+  const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const maskedValue = CEPMask(e.target.value);
+    e.target.value = maskedValue;
+
+    if (maskedValue.length === 9) {
+      fetchCEP(maskedValue);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -44,10 +67,7 @@ export default function AddressStep({
           {...register("address.cep", {
             setValueAs: (value: string) => CEPMask(value),
           })}
-          onChange={(e) => {
-            const maskedValue = CEPMask(e.target.value);
-            e.target.value = maskedValue;
-          }}
+          onChange={handleCEPChange}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
           id="cep"
@@ -81,7 +101,6 @@ export default function AddressStep({
             {...register("address.number")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
-            name="number"
             id="number"
             aria-label="Campo de número"
           />
@@ -101,7 +120,6 @@ export default function AddressStep({
             {...register("address.complement")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
-            name="complement"
             id="complement"
             placeholder="Ex.: Fundos, bloco 4"
             aria-label="Campo de complemento"
@@ -118,7 +136,6 @@ export default function AddressStep({
           {...register("address.district")}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
-          name="district"
           id="district"
           placeholder="Ex.: Higienópolis"
           aria-label="Campo de bairro"
@@ -135,7 +152,6 @@ export default function AddressStep({
             {...register("address.city")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
-            name="city"
             id="city"
             placeholder="Ex.: São Paulo"
             aria-label="Campo de cidade"
@@ -151,7 +167,6 @@ export default function AddressStep({
             {...register("address.state")}
             className="border border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
             type="text"
-            name="state"
             id="state"
             aria-label="Campo de estado"
           />

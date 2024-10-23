@@ -1,4 +1,4 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { AnnouncementFormValues } from "./types";
 
 export interface ProviderProps {
@@ -22,6 +22,7 @@ export interface LoginFormData {
 export interface AnnouncementAddressStepProps {
   register: UseFormRegister<AnnouncementFormValues>;
   errors: FieldErrors<AnnouncementFormValues["address"]>;
+  setValue: UseFormSetValue<AnnouncementFormValues>;
 }
 
 export interface CEPData {

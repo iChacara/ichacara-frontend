@@ -29,6 +29,7 @@ export default function AnnouncementForm() {
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
     watch,
@@ -114,7 +115,11 @@ export default function AnnouncementForm() {
         className="flex flex-col gap-6"
       >
         {currentStep === 0 && (
-          <AddressStep register={register} errors={errors.address || {}} />
+          <AddressStep
+            register={register}
+            errors={errors.address || {}}
+            setValue={setValue}
+          />
         )}
         {/* {currentStep === 1 && (
           <AccommodationStep
