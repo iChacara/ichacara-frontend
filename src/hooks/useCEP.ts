@@ -1,30 +1,33 @@
-import { CEPData } from "@/lib/interfaces";
+import { viaCepClient } from "@/lib/clients";
+import { ViaCepAddressProps } from "@/lib/types";
 import { useState } from "react";
 
 export const useCEP = () => {
-  const [data, setData] = useState<CEPData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [cepData, setCepData] = useState<ViaCepAddressProps | null>(null);
+  const [cepLoading, setCepLoading] = useState(false);
+  const [cepError, setCepError] = useState<string | null>(null);
 
   const fetchCEP = async (cep: string) => {
-    setLoading(true);
-    setError(null);
-    setData(null);
+    setCepLoading(true);
+    setCepError(null);
+    setCepData(null);
 
     try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      if (!response.ok) {
-        throw new Error("Erro ao buscar o CEP.");
-      }
+      if (cep.length === 9) {
+        const { data } = await viaCepClient.get(`/${cep}/json/`);
 
-      const result: CEPData = await response.json();
-      setData(result);
+        if (data.erro) {
+          throw new Error("CEP não encontrado.");
+        }
+
+        setCepData(data);
+      }
     } catch (err: any) {
-      setError(err.message);
+      setCepError(err.message);
     } finally {
-      setLoading(false);
+      setCepLoading(false);
     }
   };
 
-  return { data, loading, error, fetchCEP };
+  return { cepData, cepLoading, cepError, fetchCEP };
 };

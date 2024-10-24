@@ -12,7 +12,7 @@ export default function AddressStep({
   errors,
   setValue,
 }: AnnouncementAddressStepProps) {
-  const { data, fetchCEP } = useCEP();
+  const { cepData, cepError, cepLoading, fetchCEP } = useCEP();
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
@@ -31,22 +31,30 @@ export default function AddressStep({
   }, [errors]);
 
   useEffect(() => {
-    if (data) {
-      setValue("address.street", data.logradouro || "");
-      setValue("address.complement", data.complemento || "");
-      setValue("address.district", data.bairro || "");
-      setValue("address.city", data.localidade || "");
-      setValue("address.state", data.uf || "");
+    if (cepError) {
+      showToast("error", <p>{cepError}</p>);
+
+      setValue("address.street", "");
+      setValue("address.complement", "");
+      setValue("address.district", "");
+      setValue("address.city", "");
+      setValue("address.state", "");
     }
-  }, [data, register]);
+
+    if (cepData && !cepLoading) {
+      setValue("address.street", cepData.logradouro || "");
+      setValue("address.complement", cepData.complemento || "");
+      setValue("address.district", cepData.bairro || "");
+      setValue("address.city", cepData.localidade || "");
+      setValue("address.state", cepData.uf || "");
+    }
+  }, [cepLoading, cepData, register, cepError]);
 
   const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const maskedValue = CEPMask(e.target.value);
     e.target.value = maskedValue;
 
-    if (maskedValue.length === 9) {
-      fetchCEP(maskedValue);
-    }
+    fetchCEP(maskedValue);
   };
 
   return (
@@ -67,6 +75,7 @@ export default function AddressStep({
           {...register("address.cep", {
             setValueAs: (value: string) => CEPMask(value),
           })}
+          maxLength={9}
           onChange={handleCEPChange}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
