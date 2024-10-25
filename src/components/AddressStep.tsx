@@ -74,9 +74,9 @@ export default function AddressStep({
         <input
           {...register("address.cep", {
             setValueAs: (value: string) => CEPMask(value),
+            onChange: (e) => handleCEPChange(e),
           })}
           maxLength={9}
-          onChange={handleCEPChange}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
           id="cep"

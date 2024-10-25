@@ -1,5 +1,6 @@
 import {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
@@ -39,12 +40,15 @@ export interface AnnouncementServicesStepProps {
   register: UseFormRegister<AnnouncementFormValues>;
   errors: FieldErrors<AnnouncementFormValues["services"]>;
   setValue: UseFormSetValue<AnnouncementFormValues>;
-  watch: UseFormWatch<AnnouncementFormValues>;
+  getValues: UseFormGetValues<AnnouncementFormValues>;
 }
 
-export interface AnnouncementHighlightsStepProps {
+export interface AnnouncementImagesStepProps {
   register: UseFormRegister<AnnouncementFormValues>;
-  errors: FieldErrors<AnnouncementFormValues["highlights"]>;
+  errors: FieldErrors<AnnouncementFormValues["images"]>;
+  setValue: UseFormSetValue<AnnouncementFormValues>;
+  getValues: UseFormGetValues<AnnouncementFormValues>;
+  watch: UseFormWatch<AnnouncementFormValues>;
 }
 
 export interface AnnouncementPropertyInfoStepProps {
@@ -55,4 +59,6 @@ export interface AnnouncementPropertyInfoStepProps {
 export interface AnnouncementPricingStepProps {
   register: UseFormRegister<AnnouncementFormValues>;
   errors: FieldErrors<AnnouncementFormValues["pricing"]>;
+  setValue: UseFormSetValue<AnnouncementFormValues>;
+  watch: UseFormWatch<AnnouncementFormValues>;
 }

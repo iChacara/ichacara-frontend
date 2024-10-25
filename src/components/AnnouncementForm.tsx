@@ -30,22 +30,70 @@ export default function AnnouncementForm() {
   const {
     register,
     setValue,
-    handleSubmit,
+    getValues,
     formState: { errors },
     watch,
     trigger,
   } = useForm<AnnouncementFormValues>({
     resolver: zodResolver(announcementSchema),
     mode: "onTouched",
+    defaultValues: {
+      services: {
+        services: [],
+      },
+      highlights: {
+        highlights: [],
+      },
+      images: {
+        images: [],
+      },
+      pricing: {
+        dailyPrice: 0,
+      },
+    },
   });
 
-  const createAnnouncement = (data: AnnouncementFormValues) => {
+  const createAnnouncement = async () => {
+    const data = getValues();
+
+    console.log(data);
+
     try {
-      console.log("Dados do anúncio enviados para a API:", data);
+      const response = await fetch("/api/farm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const { errors, message } = await response.json();
+
+      if (!response.ok) {
+        if (errors && Array.isArray(errors)) {
+          showToast(
+            "error",
+            <>
+              <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+              {errors.map((error: string, index: number) => (
+                <p key={index} className="mb-1">
+                  - {error}
+                </p>
+              ))}
+            </>
+          );
+        } else if (message) {
+          showToast("error", <p>{message}</p>);
+        } else {
+          showToast("error", <p>Ocorreu um erro desconhecido!</p>);
+        }
+        return;
+      }
+
+      showToast("success", <p>{message}</p>);
+      // router.push("/");
     } catch (error: any) {
       showToast(
         "error",
-        <p>{error.message || "Ocorreu um erro ao criar um anúncio!"}</p>
+        <p>{error.message || "Ocorreu um erro ao tentar logar!"}</p>
       );
     }
   };
@@ -54,6 +102,10 @@ export default function AnnouncementForm() {
     const isStepValid = await validateCurrentStep();
     if (isStepValid && currentStep < steps.length - 1) {
       setCurrentStep((prev) => prev + 1);
+    }
+
+    if (isStepValid && currentStep === steps.length - 1) {
+      createAnnouncement();
     }
   };
 
@@ -77,7 +129,7 @@ export default function AnnouncementForm() {
         isValid = await trigger(["services"]);
         break;
       case 3:
-        isValid = await trigger(["highlights"]);
+        isValid = await trigger(["images"]);
         break;
       case 4:
         isValid = await trigger(["propertyInfo"]);
@@ -110,10 +162,7 @@ export default function AnnouncementForm() {
         {steps[currentStep]}
       </p>
 
-      <form
-        onSubmit={handleSubmit(createAnnouncement)}
-        className="flex flex-col gap-6"
-      >
+      <form className="flex flex-col gap-6">
         {currentStep === 0 && (
           <AddressStep
             register={register}
@@ -132,18 +181,32 @@ export default function AnnouncementForm() {
             register={register}
             errors={errors.services || {}}
             setValue={setValue}
+            getValues={getValues}
+          />
+        )}
+        {currentStep === 3 && (
+          <ImagesStep
+            register={register}
+            errors={errors.images || {}}
+            setValue={setValue}
+            getValues={getValues}
             watch={watch}
           />
         )}
-        {/* {currentStep === 3 && (
-          <ImagesStep register={register} errors={errors.highlights} />
-        )} */}
-        {/* {currentStep === 4 && (
-          <PropertyStep register={register} errors={errors.propertyInfo} />
-        )} */}
-        {/* {currentStep === 5 && (
-          <PrecificationStep register={register} errors={errors.pricing} />
-        )} */}
+        {currentStep === 4 && (
+          <PropertyStep
+            register={register}
+            errors={errors.propertyInfo || {}}
+          />
+        )}
+        {currentStep === 5 && (
+          <PrecificationStep
+            register={register}
+            errors={errors.pricing || {}}
+            setValue={setValue}
+            watch={watch}
+          />
+        )}
 
         <div className="flex flex-col items-center w-full gap-8 py-4 bg-white">
           <div className="flex gap-8 items-center w-full justify-center">
@@ -158,7 +221,7 @@ export default function AnnouncementForm() {
             </button>
 
             <button
-              type={currentStep === steps.length - 1 ? "submit" : "button"}
+              type="button"
               aria-label={
                 currentStep === steps.length - 1 ? "Enviar" : "Avançar"
               }

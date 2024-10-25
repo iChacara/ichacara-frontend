@@ -1,49 +1,63 @@
 "use client";
 
-import IconEdit from "@material-design-icons/svg/filled/edit.svg";
+import { AnnouncementPricingStepProps } from "@/lib/interfaces";
+import { showToast } from "@/lib/utils";
+import { PriceMask } from "@/utils/masks";
+import { useEffect } from "react";
 
-export default function PrecificationStep() {
-  // const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
+export default function PrecificationStep({
+  register,
+  errors,
+  setValue,
+  watch,
+}: AnnouncementPricingStepProps) {
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      showToast(
+        "error",
+        <>
+          <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+          {Object.entries(errors).map(([key, value]) => (
+            <p key={key} className="mb-1">
+              - {value.message}
+            </p>
+          ))}
+        </>
+      );
+    }
+  }, [errors]);
 
-  //   const formatedValue = formatToCurrency(
-  //     parseFloat(value.replace(/[^\d,]/g, "").replace(",", ".")) || 0
-  //   );
+  const currentPrice = watch("pricing.dailyPrice");
 
-  //   setFormData((prev) => ({ ...prev, [name]: formatedValue }));
-  // };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
 
-  const formatToCurrency = (priceValue: any) => {
-    return priceValue.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-      minimumFractionDigits: 2,
-    });
+    const sanitizedValue = inputValue.replace(/[^0-9,.]/g, "");
+    setValue("pricing.dailyPrice", parseFloat(sanitizedValue) || 0);
   };
 
   return (
     <div className="flex flex-col gap-4">
       <label
         htmlFor="dailyPrice"
-        className="flex flex-col gap-2 font-poppins justify-center items-center font-normal text-2xl text-[#49607B]"
+        className="flex flex-col gap-2 font-poppins justify-center items-center font-normal text-2xl text-[#49607B] cursor-pointer"
       >
         <div className="relative flex items-center gap-2">
           <input
-            className="min-w-[8.3125rem] max-w-52 outline-none block border-none h-fit text-[2rem] font-bold text-center text-light-primary placeholder-light-primary"
+            {...(register("pricing.dailyPrice"),
+            {
+              onChange: handleChange,
+            })}
             type="text"
-            name="dailyPrice"
             id="dailyPrice"
-            placeholder="R$ 0,00"
+            className="opacity-0 w-0"
+            placeholder="0,00"
             aria-label="Campo de preço da chácara"
-            // value={formData.dailyPrice}
-            // onChange={handlePriceChange}
+            autoComplete="off"
           />
-
-          <IconEdit
-            className="max-w-6 max-h-6 fill-light-primary cursor-pointer"
-            width={24}
-            height={24}
-          />
+          <span className="block w-fit text-[2rem] font-bold text-light-primary">
+            {PriceMask(currentPrice?.toString()) || "R$ 0,00"}
+          </span>
         </div>
         / dia
       </label>

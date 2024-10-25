@@ -25,7 +25,7 @@ export const LoginSchema = z.object({
   email: z
     .string()
     .min(1, { message: "O endereço de email é obrigatório" })
-    .email({ message: "Email ou senha inválidos" }),
+    .email({ message: "Digite um email válido" }),
   password: z.string().min(8, { message: "Email ou senha inválidos" }),
 });
 
@@ -78,12 +78,23 @@ const highlightsSchema = z.object({
   highlights: z.array(z.number()).optional(),
 });
 
+const imagesSchema = z.object({
+  images: z
+    .array(
+      z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
+        message: "Todos os arquivos devem ser imagens.",
+      })
+    )
+    .min(1, { message: "É necessário enviar pelo menos 1 imagem." })
+    .max(10, { message: "Você pode enviar no máximo 2 imagens." }),
+});
+
 const propertyInfoSchema = z.object({
   name: z.string().min(1, { message: "O nome da chácara é obrigatório" }),
   title: z.string().min(1, { message: "O título do anúncio é obrigatório" }),
   description: z
     .string()
-    .min(1, { message: "A descrição da propriedade é obrigatória" }),
+    .min(1, { message: "A descrição da chácara é obrigatória" }),
 });
 
 const pricingSchema = z.object({
@@ -95,8 +106,10 @@ const pricingSchema = z.object({
 export const announcementSchema = z.object({
   address: addressSchema,
   accommodation: accommodationSchema,
+  files: accommodationSchema,
   services: servicesSchema,
   highlights: highlightsSchema,
+  images: imagesSchema,
   propertyInfo: propertyInfoSchema,
   pricing: pricingSchema,
 });

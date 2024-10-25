@@ -1,6 +1,29 @@
 "use client";
 
-export default function PropertyStep() {
+import { AnnouncementPropertyInfoStepProps } from "@/lib/interfaces";
+import { showToast } from "@/lib/utils";
+import { useEffect } from "react";
+
+export default function PropertyStep({
+  register,
+  errors,
+}: AnnouncementPropertyInfoStepProps) {
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      showToast(
+        "error",
+        <>
+          <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+          {Object.entries(errors).map(([key, value]) => (
+            <p key={key} className="mb-1">
+              - {value.message}
+            </p>
+          ))}
+        </>
+      );
+    }
+  }, [errors]);
+
   return (
     <div className="flex flex-col gap-4">
       <label
@@ -9,14 +32,12 @@ export default function PropertyStep() {
       >
         Nome da chácara
         <input
+          {...register("propertyInfo.name")}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
-          name="name"
           id="name"
           placeholder="Nome da chácara"
           aria-label="Campo de nome da chácara"
-          // value={formData.name}
-          // onChange={handleChange}
         />
       </label>
 
@@ -26,14 +47,12 @@ export default function PropertyStep() {
       >
         Título do anúncio
         <input
+          {...register("propertyInfo.title")}
           className="flex-grow border-[0.0625rem] border-[#6F7978] h-10 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
           type="text"
-          name="title"
           id="title"
           placeholder="Título do anúncio"
           aria-label="Campo de título do anúncio"
-          // value={formData.title}
-          // onChange={handleChange}
         />
       </label>
 
@@ -43,13 +62,11 @@ export default function PropertyStep() {
       >
         Descrição
         <textarea
+          {...register("propertyInfo.description")}
           className="resize-none flex-grow border-[0.0625rem] border-[#6F7978] h-48 p-3 rounded-lg font-normal text-sm placeholder-[#6F7978]"
-          name="description"
           id="description"
           placeholder="Descrição do anúncio"
           aria-label="Campo de descrição"
-          // value={formData.description}
-          // onChange={handleChange}
         />
       </label>
     </div>
