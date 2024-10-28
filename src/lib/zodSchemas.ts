@@ -78,7 +78,7 @@ const highlightsSchema = z.object({
   highlights: z.array(z.number()).optional(),
 });
 
-const imagesSchema = z.object({
+export const imagesSchema = z.object({
   images: z
     .array(
       z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
@@ -106,10 +106,18 @@ const pricingSchema = z.object({
 export const announcementSchema = z.object({
   address: addressSchema,
   accommodation: accommodationSchema,
-  files: accommodationSchema,
   services: servicesSchema,
   highlights: highlightsSchema,
   images: imagesSchema,
+  propertyInfo: propertyInfoSchema,
+  pricing: pricingSchema,
+});
+
+export const farmSchema = z.object({
+  address: addressSchema,
+  accommodation: accommodationSchema,
+  services: servicesSchema,
+  highlights: highlightsSchema,
   propertyInfo: propertyInfoSchema,
   pricing: pricingSchema,
 });

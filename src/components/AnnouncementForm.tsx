@@ -54,15 +54,13 @@ export default function AnnouncementForm() {
   });
 
   const createAnnouncement = async () => {
-    const data = getValues();
-
-    console.log(data);
+    const { images, ...farm } = getValues();
 
     try {
       const response = await fetch("/api/farm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(farm),
       });
 
       const { errors, message } = await response.json();
@@ -87,6 +85,8 @@ export default function AnnouncementForm() {
         }
         return;
       }
+
+      console.log(response);
 
       showToast("success", <p>{message}</p>);
       // router.push("/");
