@@ -56,16 +56,22 @@ export default function AnnouncementForm() {
   const createAnnouncement = async () => {
     const { images, ...farm } = getValues();
 
+    const formData = new FormData();
+
+    images.images.forEach((image) => {
+      formData.append("files", image);
+    });
+
     try {
-      const response = await fetch("/api/farm", {
+      const farmResponse = await fetch("/api/farm/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(farm),
       });
 
-      const { errors, message } = await response.json();
+      const { errors, message, farmId } = await farmResponse.json();
 
-      if (!response.ok) {
+      if (!farmResponse.ok) {
         if (errors && Array.isArray(errors)) {
           showToast(
             "error",
@@ -86,7 +92,37 @@ export default function AnnouncementForm() {
         return;
       }
 
-      console.log(response);
+      formData.append("farmId", farmId);
+
+      const imageResponse = await fetch("/api/farm/upload-images", {
+        method: "POST",
+        body: formData,
+      });
+
+      const { errors: imageErrors, message: imageMessage } = await imageResponse.json();
+
+      if (!imageResponse.ok) {
+        if (imageErrors && Array.isArray(imageErrors)) {
+          showToast(
+            "error",
+            <>
+              <p className="mb-2">Por favor, corrija os seguintes erros:</p>
+              {imageErrors.map((error: string, index: number) => (
+                <p key={index} className="mb-1">
+                  - {error}
+                </p>
+              ))}
+            </>
+          );
+        } else if (imageMessage) {
+          showToast("error", <p>{imageMessage}</p>);
+        } else {
+          showToast("error", <p>Ocorreu um erro desconhecido!</p>);
+        }
+        return;
+      }
+
+      console.log("IMAGE RESPONSE: ", imageMessage)
 
       showToast("success", <p>{message}</p>);
       // router.push("/");
