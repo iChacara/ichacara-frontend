@@ -78,7 +78,7 @@ const highlightsSchema = z.object({
   highlights: z.array(z.number()).optional(),
 });
 
-export const imagesSchema = z.object({
+const imagesSchema = z.object({
   images: z
     .array(
       z.instanceof(File).refine((file) => file.type.startsWith("image/"), {
