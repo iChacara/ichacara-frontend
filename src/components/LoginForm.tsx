@@ -52,7 +52,7 @@ export default function LoginForm() {
       }
 
       showToast("success", <p>{message}</p>);
-      // router.push("/");
+      router.push("/home");
     } catch (error: any) {
       showToast(
         "error",
