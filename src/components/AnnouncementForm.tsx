@@ -14,6 +14,7 @@ import PropertyStep from "./PropertyStep";
 import PrecificationStep from "./PrecificationStep";
 import { announcementSchema } from "@/lib/zodSchemas";
 import { AnnouncementFormValues } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 const steps = [
   "Endereço",
@@ -26,6 +27,7 @@ const steps = [
 
 export default function AnnouncementForm() {
   const [currentStep, setCurrentStep] = useState(0);
+  const router = useRouter();
 
   const {
     register,
@@ -99,7 +101,8 @@ export default function AnnouncementForm() {
         body: formData,
       });
 
-      const { errors: imageErrors, message: imageMessage } = await imageResponse.json();
+      const { errors: imageErrors, message: imageMessage } =
+        await imageResponse.json();
 
       if (!imageResponse.ok) {
         if (imageErrors && Array.isArray(imageErrors)) {
@@ -122,10 +125,8 @@ export default function AnnouncementForm() {
         return;
       }
 
-      console.log("IMAGE RESPONSE: ", imageMessage)
-
-      showToast("success", <p>{message}</p>);
-      // router.push("/");
+      showToast("success", <p>{imageMessage}</p>);
+      router.push("/");
     } catch (error: any) {
       showToast(
         "error",
