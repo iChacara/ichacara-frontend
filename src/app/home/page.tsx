@@ -1,3 +1,5 @@
+import ShowcaseCarousel from "@/components/ShowcaseCarousel";
+import ShowcaseGrid from "@/components/ShowcaseGrid";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +10,11 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main className="min-h-dvh h-full mt-24">
-      <p>Home</p>
+      <div className="flex flex-col gap-8">
+        <ShowcaseCarousel />
+
+        <ShowcaseGrid />
+      </div>
     </main>
   );
 }
