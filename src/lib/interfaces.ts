@@ -62,3 +62,29 @@ export interface AnnouncementPricingStepProps {
   setValue: UseFormSetValue<AnnouncementFormValues>;
   watch: UseFormWatch<AnnouncementFormValues>;
 }
+
+export interface FarmProps {
+  id: number;
+  title: string;
+  name: string;
+  cep: string;
+  street: string;
+  number: string;
+  description: string;
+  complement?: string;
+  district: string;
+  city: string;
+  state: string;
+  numRooms: number;
+  numBeds: number;
+  numBathrooms: number;
+  maxOccupancy: number;
+  services: string;
+  highlights?: string;
+  photos: string[] | null;
+  dailyPrice: number;
+  lessorId: number;
+  approved: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
