@@ -21,6 +21,9 @@ const config: Config = {
           primary: "#80D5D0",
         },
       },
+      boxShadow: {
+        "3xl": "0 -20px 60px -15px rgba(0, 0, 0, 0.25)",
+      },
     },
   },
   plugins: [],
