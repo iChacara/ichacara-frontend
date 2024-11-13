@@ -29,7 +29,7 @@ export default function Navbar() {
       </li>
       <li>
         <Link
-          href={"/home"}
+          href={"/perfil"}
           className="gap-1 flex flex-col justify-end items-center fill-gray-700 text-gray-700 hover:fill-black hover:text-black transition-colors"
         >
           <IconMenu className="fill-inherit" width={28} height={28} />
