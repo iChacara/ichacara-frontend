@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { announcementSchema } from "./zodSchemas";
+import { FarmProps } from "./interfaces";
 
 export type ToastType = "success" | "error" | "info" | "warning" | "default";
 
@@ -15,8 +16,10 @@ export type ViaCepAddressProps = {
 
 export type ShowcaseProps = {
   title?: string;
+  farms: [];
 };
 
 export type AnnouncementCardProps = {
   type?: "carousel" | "full";
+  farm: FarmProps;
 };

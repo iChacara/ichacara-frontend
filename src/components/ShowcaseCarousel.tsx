@@ -9,6 +9,7 @@ import { ShowcaseProps } from "@/lib/types";
 
 export default function ShowcaseCarousel({
   title = "Chácaras perto de você",
+  farms,
 }: ShowcaseProps) {
   return (
     <section className="max-w-screen-2xl mx-auto w-[calc(100%-4rem)]">
@@ -32,13 +33,11 @@ export default function ShowcaseCarousel({
           }}
           className="h-80 max-h-80 w-full"
         >
-          {Array(8)
-            .fill(null)
-            .map((_, index) => (
-              <SwiperSlide key={index}>
-                <AnnouncementCard type="carousel" />
-              </SwiperSlide>
-            ))}
+          {farms.map((farm, index) => (
+            <SwiperSlide key={index}>
+              <AnnouncementCard type="carousel" farm={farm} />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </section>

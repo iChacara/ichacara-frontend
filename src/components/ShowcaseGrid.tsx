@@ -6,6 +6,7 @@ import { ShowcaseProps } from "@/lib/types";
 
 export default function ShowcaseGrid({
   title = "As mais visitadas",
+  farms,
 }: ShowcaseProps) {
   return (
     <section className="max-w-screen-2xl mx-auto w-[calc(100%-4rem)]">
@@ -15,11 +16,9 @@ export default function ShowcaseGrid({
         </span>
 
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {Array(8)
-            .fill(null)
-            .map((_, index) => (
-              <AnnouncementCard key={index} />
-            ))}
+          {farms.map((farm, index) => (
+            <AnnouncementCard key={index} farm={farm} />
+          ))}
         </div>
       </div>
     </section>

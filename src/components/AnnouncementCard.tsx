@@ -8,6 +8,7 @@ import Link from "next/link";
 
 export default function AnnouncementCard({
   type = "full",
+  farm,
 }: AnnouncementCardProps) {
   return (
     <Link
@@ -41,10 +42,10 @@ export default function AnnouncementCard({
               type === "carousel" ? "text-sm" : "text-[1rem]/[1.25rem]"
             }`}
           >
-            Chácara Monte dos Guarapanã
+            {farm.name}
           </p>
 
-          <div className="flex">
+          {/* <div className="flex">
             <IconStar
               className="fill-light-primary max-w-5 max-h-5"
               width={20}
@@ -54,21 +55,16 @@ export default function AnnouncementCard({
             <p className="font-poppins font-medium text-sm text-light-primary">
               4.99 (10)
             </p>
-          </div>
+          </div> */}
         </div>
 
         {type === "carousel" ? (
           <p className="font-poppins font-light text-xs text-light-on-primary-container line-clamp-5">
-            A Chácara Monte dos Guarapanã é um espaço de lazer e eventos situado
-            em um ambiente natural e acolhedor. Com uma ampla área verde, a
-            chácara oferece diversas opções para quem busca tranquilidade,
-            contato com a natureza ou um local especial para realizar eventos
-            como casamentos, festas de aniversário, confraternizações e
-            encontros familiares.
+            {farm.description}
           </p>
         ) : (
           <p className="font-poppins font-normal text-[0.75rem]/[1.25rem] text-[#6F7978] tracking-[0.0156rem] line-clamp-1">
-            Gabriel Rodrigues
+            {farm.title || "Gabriel Rodrigues"}
           </p>
         )}
       </div>
