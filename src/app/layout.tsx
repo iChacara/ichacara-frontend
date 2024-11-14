@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body>
         <ToastProvider>{children}</ToastProvider>
-        <Navbar />
+        {/* <Navbar /> */}
       </body>
     </html>
   );
