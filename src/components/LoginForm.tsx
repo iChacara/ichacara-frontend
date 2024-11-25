@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import IconInvisible from "@material-design-icons/svg/filled/visibility.svg";
 import IconVisible from "@material-design-icons/svg/filled/visibility_off.svg";
+import IconArrowBack from "@material-design-icons/svg/outlined/arrow_back.svg";
 import { useForm } from "react-hook-form";
 import { LoginFormData } from "@/lib/interfaces";
 
@@ -63,11 +64,22 @@ export default function LoginForm() {
 
   return (
     <section className="flex flex-col gap-8 w-[calc(100%-4rem)] max-w-screen-md mx-auto ]">
+      <button
+        className="absolute top-2 left-2 flex items-center justify-center bg-light-primary rounded-md w-11 h-11"
+        onClick={() => router.back()}
+      >
+        <IconArrowBack
+          className="fill-white max-w-5 max-h-5"
+          width={20}
+          height={20}
+        />
+      </button>
+
       <div className="flex flex-col gap-8 justify-center items-center">
         <figure>
           <Image
             src="/fullLogo.svg"
-            alt="Ichácara logo"
+            alt="iChacara logo"
             width="198"
             height="138"
             priority
