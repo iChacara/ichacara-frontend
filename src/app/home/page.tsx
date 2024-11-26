@@ -3,6 +3,8 @@ import ShowcaseGrid from "@/components/ShowcaseGrid";
 import { farmList } from "@/services/farm";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "iChacara - Home",
   description: "Aluguel de chácaras",
