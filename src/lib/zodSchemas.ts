@@ -121,3 +121,11 @@ export const farmSchema = z.object({
   propertyInfo: propertyInfoSchema,
   pricing: pricingSchema,
 });
+
+export const bookingSchema = z.object({
+  lesseeId: z.number().int(),
+  farmId: z.number().int(),
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
+  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Data inválida"),
+  numGuests: z.number().int().positive(),
+});

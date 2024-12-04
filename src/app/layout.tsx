@@ -1,7 +1,8 @@
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import ToastProvider from "@/providers/ToastProvider";
-import Navbar from '../components/Navbar';
+import { NextUIProvider } from "@nextui-org/system";
+import Navbar from "../components/Navbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body>
-        <ToastProvider>{children}</ToastProvider>
+        <NextUIProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </NextUIProvider>
         {/* <Navbar /> */}
       </body>
     </html>

@@ -88,3 +88,8 @@ export interface FarmProps {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface BookingFormProps {
+  userId: number;
+  farmId: number;
+}

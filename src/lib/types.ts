@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { announcementSchema } from "./zodSchemas";
+import { announcementSchema, bookingSchema } from "./zodSchemas";
 import { FarmProps } from "./interfaces";
 
 export type ToastType = "success" | "error" | "info" | "warning" | "default";
 
 export type AnnouncementFormValues = z.infer<typeof announcementSchema>;
+export type BookingFormValues = z.infer<typeof bookingSchema>;
 
 export type ViaCepAddressProps = {
   bairro: string;

@@ -4,6 +4,7 @@ import FarmImageCarousel from "../../../components/farm/FarmImageCarousel";
 import TagComponent from "../../../components/ui/Tag";
 import { Metadata } from "next";
 import { farmById } from "@/services/farm";
+import Link from "next/link";
 // import { useState } from "react";
 
 export const metadata: Metadata = {
@@ -11,11 +12,7 @@ export const metadata: Metadata = {
   description: "Aluguel de chácaras",
 };
 
-export default async function ChacaraPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function FarmPage({ params }: { params: { id: string } }) {
   // const [seeMore, setSeeMore] = useState(false);
 
   const { data } = await farmById(params.id);
@@ -74,9 +71,9 @@ export default async function ChacaraPage({
           R${data.dailyPrice}/dia
         </strong>
 
-        <button className="flex items-center font-inter text-base bg-light-on-primary-container rounded-lg py-2 px-3 font-medium text-white">
+        <Link href={`${params.id}/agendar`} className="flex items-center font-inter text-base bg-light-on-primary-container rounded-lg py-2 px-3 font-medium text-white">
           Agendar
-        </button>
+        </Link>
       </div>
     </main>
   );

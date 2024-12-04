@@ -130,7 +130,7 @@ export default function AnnouncementForm() {
     } catch (error: any) {
       showToast(
         "error",
-        <p>{error.message || "Ocorreu um erro ao tentar logar!"}</p>
+        <p>{error.message || "Ocorreu um erro ao criar o anúncio!"}</p>
       );
     }
   };
