@@ -13,7 +13,7 @@ export default function Navbar() {
     <ul className="w-full fixed bottom-0 h-20 bg-white shadow-3xl rounded-t-full flex justify-center gap-16 items-center">
       <li>
         <Link
-          href={"/home"}
+          href={"/chacaras"}
           className="gap-1 flex flex-col justify-end items-center fill-gray-700 text-gray-700 hover:fill-black hover:text-black transition-colors"
         >
           <IconHome className="fill-inherit" width={28} height={28} />
@@ -22,7 +22,7 @@ export default function Navbar() {
       </li>
       <li>
         <Link
-          href={"/home"}
+          href={"/chacaras"}
           className="gap-1 flex flex-col justify-end items-center fill-gray-700 text-gray-700 hover:fill-black hover:text-black transition-colors"
         >
           <IconCalendarMonth className="fill-inherit" width={28} height={28} />

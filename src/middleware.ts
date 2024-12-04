@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
 
   if (token) {
     if (pathname === "/" || pathname === "/criar-conta") {
-      return NextResponse.redirect(new URL("/home", request.url));
+      return NextResponse.redirect(new URL("/chacaras", request.url));
     }
   }
 

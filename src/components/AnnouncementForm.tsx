@@ -126,7 +126,7 @@ export default function AnnouncementForm() {
       }
 
       showToast("success", <p>{imageMessage}</p>);
-      router.push("/home");
+      router.push("/chacaras");
     } catch (error: any) {
       showToast(
         "error",

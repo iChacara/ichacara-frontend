@@ -53,7 +53,7 @@ export default function LoginForm() {
       }
 
       showToast("success", <p>{message}</p>);
-      router.push("/home");
+      router.push("/chacaras");
     } catch (error: any) {
       showToast(
         "error",
