@@ -6,7 +6,12 @@ export default function LandingPage() {
   return (
     <main className="min-h-dvh h-full p-8 flex flex-col items-center gap-8">
       <div className="w-screen">
-        <Image fill alt="Imagem bem-vindo" src="/farm.jpg" objectFit="cover" />
+        <Image
+          fill
+          alt="Imagem bem-vindo"
+          src="/farm.jpg"
+          className="object-cover"
+        />
         <div className="w-full h-full fixed top-0 bg-gradient-to-t from-black to-black/40 flex flex-col justify-end items-center gap-4 pb-20 px-8">
           <h1 className="text-white text-3xl font-poppins font-bold">
             Bem-vindo!

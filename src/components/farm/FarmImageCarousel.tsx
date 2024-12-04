@@ -57,7 +57,7 @@ export default function FarmImageCarousel({ images }: FarmImageCarouselProps) {
                 src={image}
                 alt={`Slide ${index + 1}`}
                 fill
-                objectFit="cover"
+                className="object-cover"
                 priority
               />
             </div>
