@@ -72,6 +72,7 @@ export default function AvailableServicesStep({
               type="checkbox"
               id={key}
               aria-label={`Campo de ${name}`}
+              defaultChecked={getValues("services.services")?.includes(name)}
             />
           </label>
         ))}
