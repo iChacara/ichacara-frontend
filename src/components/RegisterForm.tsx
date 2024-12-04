@@ -14,16 +14,22 @@ import { showToast } from "@/lib/utils";
 import { RegisterFormData } from "@/lib/interfaces";
 
 export default function RegisterForm() {
-  const [visiblePass, setVisiblePass] = useState(false);
-  const [visibleConfirmPass, setVisibleConfirmPass] = useState(false);
-  const [selectedType, setSelectedType] = useState("lessee");
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
+    watch,
     formState: { isSubmitting },
-  } = useForm<RegisterFormData>();
+  } = useForm<RegisterFormData>({
+    defaultValues: {
+      type: "lessee"
+    }
+  });
+
+  const [visiblePass, setVisiblePass] = useState(false);
+  const [visibleConfirmPass, setVisibleConfirmPass] = useState(false);
+  const userType = watch("type");
+  const router = useRouter();
+
 
   async function onSubmit(data: RegisterFormData) {
     try {
@@ -211,8 +217,7 @@ export default function RegisterForm() {
                   id="lessee"
                   aria-label="Campo de quero alugar"
                   {...register("type")}
-                  checked={selectedType === "lessee"}
-                  onChange={() => setSelectedType("lessee")}
+                  checked={userType === "lessee"}
                 />
               </label>
 
@@ -234,8 +239,7 @@ export default function RegisterForm() {
                   id="lessor"
                   aria-label="Campo de quero anunciar"
                   {...register("type")}
-                  checked={selectedType === "lessor"}
-                  onChange={() => setSelectedType("lessor")}
+                  checked={userType === "lessor"}
                 />
               </label>
             </div>
