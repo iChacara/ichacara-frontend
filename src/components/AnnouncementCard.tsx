@@ -12,7 +12,7 @@ export default function AnnouncementCard({
 }: AnnouncementCardProps) {
   return (
     <Link
-      href="#"
+      href={`/chacaras/${farm.id}`}
       aria-label="Chácara"
       className={`flex flex-col min-w-[14.375rem] rounded-lg overflow-hidden ${
         type === "carousel" ? "h-80" : "h-[20.625rem]"

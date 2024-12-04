@@ -20,3 +20,23 @@ export async function farmList() {
     );
   }
 }
+
+export async function farmById(id: string) {
+  try {
+    const token = getCookie("ichacara_token");
+
+    const response = await apiClient.get(`/farm/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message ||
+        error.message ||
+        "Erro ao listar chácaras"
+    );
+  }
+}
